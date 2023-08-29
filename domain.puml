@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include vars.puml
+!include domain_cicd.puml
+!include domain_code_quality.puml
+!include domain_cross_domain.puml
+!include domain_code_review.puml
+!include domain_source_code_management.puml
+@enduml

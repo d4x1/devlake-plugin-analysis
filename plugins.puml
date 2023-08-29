@@ -1,0 +1,7 @@
+@startuml
+'https://plantuml.com/object-diagram
+package Plugins{
+    !include plugin_demo_main.puml
+    !include plugin_zentao_main.puml
+}
+@enduml

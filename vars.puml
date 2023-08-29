@@ -1,0 +1,4 @@
+@startuml
+'https://plantuml.com/object-diagram
+!$varchar255 = "varchar(255)"
+@enduml
