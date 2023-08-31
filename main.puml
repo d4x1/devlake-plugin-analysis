@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+!include test.puml
+package "Domain Layer"{
+    !include domain.puml
+}
+!include plugins.puml
+@enduml

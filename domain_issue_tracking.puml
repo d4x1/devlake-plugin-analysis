@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+
+package "Issue Tracking"{
+
+}
+
+@enduml
