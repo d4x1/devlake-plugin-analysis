@@ -2,6 +2,10 @@
 'https://plantuml.com/object-diagram
 
 package "Source Code Management"{
+    object "commits_diffs" as commits_diffs
+    object "commits" as commits
+    object "repo_commits" as repo_commits
+    object "repos" as repos
 
 }
 

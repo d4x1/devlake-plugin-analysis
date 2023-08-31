@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+'!theme sandstone
+!theme cyborg
+!include vars.puml
+!include plugin_bamboo_basic.puml
+!include  plugin_bamboo_main_tables.puml
+
+'fields relations
+_tool_bamboo_plan_builds::type <-- Data::RegexEnricher : "DEPLOYMENT"
+_tool_bamboo_plan_builds::environment <-- Data::RegexEnricher : "PRODUCTION"
+
+cicd_deployment_commits::environment <-- Data::RegexEnricher : "ENV_NAME_PATTERN"
+
+_tool_bamboo_job_builds::type <-- Data::RegexEnricher : "DEPLOYMENT"
+_tool_bamboo_job_builds::environment <-- Data::RegexEnricher : "PRODUCTION"
+
+@enduml

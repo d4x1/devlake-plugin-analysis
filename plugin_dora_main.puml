@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include vars.puml
+!theme cyborg
+!include domain_cicd.puml
+!include domain_code_quality.puml
+!include domain_code_review.puml
+!include domain_cross_domain.puml
+!include domain_issue_tracking.puml
+!include domain_source_code_management.puml
+
+package Dora{
+
+   pull_requests --> project_pr_metrics: CalculateChangeLeadTime
+   project_mapping --> project_pr_metrics: CalculateChangeLeadTime
+   pull_request_commits --> project_pr_metrics: CalculateChangeLeadTime
+   pull_request_comments --> project_pr_metrics: CalculateChangeLeadTime
+   cicd_deployment_commits --> project_pr_metrics: CalculateChangeLeadTime
+   commits_diffs --> project_pr_metrics: CalculateChangeLeadTime
+
+   cicd_pipeline_commits --> cicd_deployment_commits: GenerateDeploymentCommits
+   cicd_pipelines --> cicd_deployment_commits: GenerateDeploymentCommits
+   project_mapping --> cicd_deployment_commits: GenerateDeploymentCommits
+   cicd_tasks --> cicd_deployment_commits: GenerateDeploymentCommits
+
+   issues --> project_issue_metrics : ConnectIncidentToDeployment
+   cicd_deployment_commits --> project_issue_metrics : ConnectIncidentToDeployment
+   board_issues --> project_issue_metrics : ConnectIncidentToDeployment
+   project_mapping -> project_issue_metrics : ConnectIncidentToDeployment
+
+   cicd_deployment_commits --> cicd_deployment_commits: EnrichPrevSuccessDeploymentCommit
+   project_mapping --> cicd_deployment_commits: EnrichPrevSuccessDeploymentCommit
+
+}
+@enduml

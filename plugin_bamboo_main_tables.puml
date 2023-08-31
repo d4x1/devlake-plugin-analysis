@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+hide empty members
+'!theme sandstone
+!theme cyborg
+!include vars.puml
+!include plugin_bamboo_basic.puml
+
+'   tables relations
+
+EnvDetailAPI --> _raw_bamboo_api_deploy_build : CollectDeployBuild
+ProjectAllAPI --> _raw_bamboo_api_deploy : CollectDeploy
+JobDetailAPI --> _raw_bamboo_api_job_build:CollectJobBuild
+SearchJobAPI --> _raw_bamboo_api_job :CollectJob
+PlanResultAPI --> _raw_bamboo_api_plan_build :CollectPlanBuild
+
+_raw_bamboo_api_deploy_build --> _tool_bamboo_deploy_build : ExtractDeployBuild
+_raw_bamboo_api_job_build --> _tool_bamboo_plan_build_commits : ExtractJobBuild
+_raw_bamboo_api_job_build --> _tool_bamboo_job_builds : ExtractJobBuild
+_raw_bamboo_api_deploy -->  _tool_bamboo_deploy_environment :ExtractDeploy
+_raw_bamboo_api_plan_build  --> _tool_bamboo_plan_build_commits :ExtractPlanBuild
+_raw_bamboo_api_plan_build  --> _tool_bamboo_plan_builds :ExtractPlanBuild
+
+_tool_bamboo_deploy_build --> cicd_deployment_commits : ConvertDeployBuilds
+_tool_bamboo_plan_build_commits --> cicd_deployment_commits : ConvertDeployBuilds
+_tool_bamboo_jobs --> _raw_bamboo_api_job_build:CollectJobBuild
+_tool_bamboo_deploy_environment --> _raw_bamboo_api_deploy_build : CollectDeployBuild
+_tool_bamboo_plan_build_commits --> cicd_pipeline_commits: ConvertPlanVcs
+_tool_bamboo_plan_builds --> cicd_pipeline_commits: ConvertPlanVcs
+_tool_bamboo_plans --> cicd_scopes : ConvertPlans
+_tool_bamboo_plan_builds --> cicd_pipelines: ConvertPlanBuilds
+_tool_bamboo_job_builds --> cicd_tasks :ConvertJobBuilds
+
+@enduml

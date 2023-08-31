@@ -3,6 +3,11 @@
 
 
 package "Issue Tracking"{
+    object "issues" as issues
+    object "board_issues" as  board_issues
+    object "issue_comments" as  issue_comments
+    object "issue_assignees" as  issue_assignees
+    object "boards" as  boards
 
 }
 

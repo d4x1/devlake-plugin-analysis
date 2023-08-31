@@ -2,8 +2,11 @@
 'https://plantuml.com/object-diagram
 
 package "Cross Domain"{
+    object "project_mapping" as project_mapping
+    object "project_pr_metrics" as project_pr_metrics
+    object "project_issue_metrics" as project_issue_metrics
+    object "accounts" as accounts
 
 }
-
 
 @enduml
