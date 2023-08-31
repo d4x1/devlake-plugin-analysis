@@ -1,0 +1,67 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+'!theme sandstone
+!theme cyborg
+
+package BitBucket{
+
+    package APILayer {
+        component "/deploy/environment/{{ _tool_bamboo_deploy_environment.env_id }}/results.json" as EnvDetailAPI
+        component "/deploy/project/all.json" as ProjectAllAPI
+        component "/result/{{ _tool_bamboo_jobs.job_key }}.json" as JobDetailAPI
+        component "/search/jobs/{{options.plan_key}}.json" as SearchJobAPI
+        component "/result/{{options.plan_key}}.json" as PlanResultAPI
+    }
+
+    package RawLayer {
+        object "_raw_bamboo_api_deploy_build" as _raw_bamboo_api_deploy_build
+        object "_raw_bamboo_api_deploy" as _raw_bamboo_api_deploy
+        object "_raw_bamboo_api_job_build" as _raw_bamboo_api_job_build
+        object "_raw_bamboo_api_plan_build" as _raw_bamboo_api_plan_build
+        object "_raw_bamboo_api_job" as _raw_bamboo_api_job
+    }
+
+    package ToolLayer {
+        object "_tool_bamboo_deploy_build" as _tool_bamboo_deploy_build
+        object "_tool_bamboo_plan_build_commits" as _tool_bamboo_plan_build_commits
+        object "_tool_bamboo_deploy_environment" as _tool_bamboo_deploy_environment
+        object "_tool_bamboo_jobs" as _tool_bamboo_jobs
+        object "_tool_bamboo_plan_builds" as _tool_bamboo_plan_builds
+        object "_tool_bamboo_job_builds" as _tool_bamboo_job_builds
+        object "_tool_bamboo_plans" as _tool_bamboo_plans
+    }
+
+    package DomainLayer {
+        object "cicd_deployment_commits" as cicd_deployment_commits
+        object "cicd_tasks" as cicd_tasks
+        object "cicd_pipelines" as cicd_pipelines
+        object "cicd_pipeline_commits" as cicd_pipeline_commits
+        object "cicd_scopes" as cicd_scopes
+    }
+
+    EnvDetailAPI -> _raw_bamboo_api_deploy_build : CollectDeployBuild
+    ProjectAllAPI -> _raw_bamboo_api_deploy : CollectDeploy
+    JobDetailAPI --> _raw_bamboo_api_job_build:CollectJobBuild
+    SearchJobAPI --> _raw_bamboo_api_job :CollectJob
+    PlanResultAPI --> _raw_bamboo_api_plan_build :CollectPlanBuild
+
+    _raw_bamboo_api_deploy_build --> _tool_bamboo_deploy_build : ExtractDeployBuild
+    _raw_bamboo_api_job_build -> _tool_bamboo_plan_build_commits : ExtractJobBuild
+    _raw_bamboo_api_job_build -> _tool_bamboo_job_builds : ExtractJobBuild
+    _raw_bamboo_api_deploy -->  _tool_bamboo_deploy_environment :ExtractDeploy
+    _raw_bamboo_api_plan_build  --> _tool_bamboo_plan_build_commits :ExtractPlanBuild
+    _raw_bamboo_api_plan_build  --> _tool_bamboo_plan_builds :ExtractPlanBuild
+
+    _tool_bamboo_deploy_build --> cicd_deployment_commits : ConvertDeployBuilds
+    _tool_bamboo_plan_build_commits --> cicd_deployment_commits : ConvertDeployBuilds
+    _tool_bamboo_jobs --> _raw_bamboo_api_job_build:CollectJobBuild
+    _tool_bamboo_deploy_environment -> _raw_bamboo_api_deploy_build : CollectDeployBuild
+    _tool_bamboo_plan_build_commits --> cicd_pipeline_commits: ConvertPlanVcs
+    _tool_bamboo_plan_builds --> cicd_pipeline_commits: ConvertPlanVcs
+    _tool_bamboo_plans --> cicd_scopes : ConvertPlans
+    _tool_bamboo_plan_builds --> cicd_pipelines: ConvertPlanBuilds
+    _tool_bamboo_job_builds --> cicd_tasks :ConvertJobBuilds
+
+}
+@enduml
