@@ -1,0 +1,53 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+hide empty members
+'!theme sandstone
+!theme cyborg
+!include vars.puml
+
+package Bamboo{
+
+    package Config {
+        object "TaskData" as Data{
+            RegexEnricher = ""
+        }
+    }
+
+    package APILayer {
+        component "/deploy/environment/{{ _tool_bamboo_deploy_environment.env_id }}/results.json" as EnvDetailAPI
+        component "/deploy/project/all.json" as ProjectAllAPI
+        component "/result/{{ _tool_bamboo_jobs.job_key }}.json" as JobDetailAPI
+        component "/search/jobs/{{options.plan_key}}.json" as SearchJobAPI
+        component "/result/{{options.plan_key}}.json" as PlanResultAPI
+    }
+
+    package RawLayer {
+        object "_raw_bamboo_api_deploy_build" as _raw_bamboo_api_deploy_build
+        object "_raw_bamboo_api_deploy" as _raw_bamboo_api_deploy
+        object "_raw_bamboo_api_job_build" as _raw_bamboo_api_job_build
+        object "_raw_bamboo_api_plan_build" as _raw_bamboo_api_plan_build
+        object "_raw_bamboo_api_job" as _raw_bamboo_api_job
+    }
+
+    package ToolLayer {
+        object "_tool_bamboo_deploy_build" as _tool_bamboo_deploy_build
+        object "_tool_bamboo_plan_build_commits" as _tool_bamboo_plan_build_commits
+        object "_tool_bamboo_deploy_environment" as _tool_bamboo_deploy_environment
+        object "_tool_bamboo_jobs" as _tool_bamboo_jobs
+        object "_tool_bamboo_plan_builds" as _tool_bamboo_plan_builds{
+            type = varchar255
+            environment = varchar255
+        }
+        object "_tool_bamboo_job_builds" as _tool_bamboo_job_builds{
+            type = varchar255
+            environment = varchar255
+        }
+        object "_tool_bamboo_plans" as _tool_bamboo_plans
+    }
+
+    package DomainLayer {
+       !include domain_cicd.puml
+    }
+}
+@enduml

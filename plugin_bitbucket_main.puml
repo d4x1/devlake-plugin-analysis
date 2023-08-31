@@ -1,67 +1,185 @@
 @startuml
 'https://plantuml.com/object-diagram
-allowmixing
-'!theme sandstone
 !theme cyborg
+'!theme sandstone
+allowmixing
 
 package BitBucket{
 
     package APILayer {
-        component "/deploy/environment/{{ _tool_bamboo_deploy_environment.env_id }}/results.json" as EnvDetailAPI
-        component "/deploy/project/all.json" as ProjectAllAPI
-        component "/result/{{ _tool_bamboo_jobs.job_key }}.json" as JobDetailAPI
-        component "/search/jobs/{{options.plan_key}}.json" as SearchJobAPI
-        component "/result/{{options.plan_key}}.json" as PlanResultAPI
+        component "/repositories/{{ data.Options.FullName }}/commits" as RepositoriesCommitsAPI
+        component "/repositories/{{ data.Options.FullName }}/deployments/" as RepositoriesDeploymentsAPI
+        component "/repositories/{{ data.Options.FullName }}/issues" as RepositoriesIssuesAPI
+        component "/repositories/{{ data.Options.FullName }}/issues/{{ _tool_bitbucket_issues.bitbucket_id }}/comments" as RepositoriesIssueCommentsAPI
+        component "/repositories/{{ data.Options.FullName }}/pipelines/" as RepositoriesIssuePipelinesAPI
+        component "/repositories/{{ data.Options.FullName }}/pipelines/{{ _tool_bitbucket_pipelines.bitbucket_id }}/steps/" as RepositoriesPipelineStepsAPI
+        component "/repositories/{{ data.Options.FullName }}/pullrequests" as RepositoriesPullRequestsAPI
+        component "/repositories/{{ data.Options.FullName }}/pullrequests/{{ _tool_bitbucket_pull_requests.bitbucket_id }}/comments" as RepositoriesPullRequestCommentsAPI
+        component "/repositories/{{ data.Options.FullName }}/pullrequests/{{ _tool_bitbucket_pull_requests.bitbucket_id }}/commits" as RepositoriesPullRequestCommitsAPI
+
+
     }
 
     package RawLayer {
-        object "_raw_bamboo_api_deploy_build" as _raw_bamboo_api_deploy_build
-        object "_raw_bamboo_api_deploy" as _raw_bamboo_api_deploy
-        object "_raw_bamboo_api_job_build" as _raw_bamboo_api_job_build
-        object "_raw_bamboo_api_plan_build" as _raw_bamboo_api_plan_build
-        object "_raw_bamboo_api_job" as _raw_bamboo_api_job
+        object "_raw_bitbucket_api_accounts" as _raw_bitbucket_api_accounts
+        object "_raw_bitbucket_api_commits" as _raw_bitbucket_api_commits
+        object "_raw_bitbucket_api_deployments" as _raw_bitbucket_api_deployments
+        object "_raw_bitbucket_api_issues" as _raw_bitbucket_api_issues
+        object "_raw_bitbucket_api_issue_comments" as _raw_bitbucket_api_issue_comments
+        object "_raw_bitbucket_api_pipeline_steps" as _raw_bitbucket_api_pipeline_steps
+        object "_raw_bitbucket_api_pull_requests" as _raw_bitbucket_api_pull_requests
+        object "_raw_bitbucket_api_pipelines" as _raw_bitbucket_api_pipelines
+        object "_raw_bitbucket_api_pull_request_comments" as _raw_bitbucket_api_pull_request_comments
+        object "_raw_bitbucket_api_pull_request_commits" as _raw_bitbucket_api_pull_request_commits
+
+
     }
 
     package ToolLayer {
-        object "_tool_bamboo_deploy_build" as _tool_bamboo_deploy_build
-        object "_tool_bamboo_plan_build_commits" as _tool_bamboo_plan_build_commits
-        object "_tool_bamboo_deploy_environment" as _tool_bamboo_deploy_environment
-        object "_tool_bamboo_jobs" as _tool_bamboo_jobs
-        object "_tool_bamboo_plan_builds" as _tool_bamboo_plan_builds
-        object "_tool_bamboo_job_builds" as _tool_bamboo_job_builds
-        object "_tool_bamboo_plans" as _tool_bamboo_plans
+        object "_tool_bitbucket_accounts" as _tool_bitbucket_accounts
+        object "_tool_bitbucket_commits" as _tool_bitbucket_commits
+        object "_tool_bitbucket_repo_commits" as _tool_bitbucket_repo_commits
+
+        object "_tool_bitbucket_pipelines" as _tool_bitbucket_pipelines
+        object "_tool_bitbucket_deployments" as _tool_bitbucket_deployments
+        object "_tool_bitbucket_issues" as _tool_bitbucket_issues
+        object "_tool_bitbucket_repos" as _tool_bitbucket_repos
+        object "_tool_bitbucket_issue_comments" as _tool_bitbucket_issue_comments
+        object "_tool_bitbucket_pull_requests" as _tool_bitbucket_pull_requests
+        object "_tool_bitbucket_pipeline_steps" as _tool_bitbucket_pipeline_steps
+        object "_tool_bitbucket_pull_request_comments" as _tool_bitbucket_pull_request_comments
+        object "_tool_bitbucket_pull_request_commits" as _tool_bitbucket_pull_request_commits
+
+
+
     }
 
-    package DomainLayer {
-        object "cicd_deployment_commits" as cicd_deployment_commits
-        object "cicd_tasks" as cicd_tasks
-        object "cicd_pipelines" as cicd_pipelines
-        object "cicd_pipeline_commits" as cicd_pipeline_commits
-        object "cicd_scopes" as cicd_scopes
+    package "Domain Layer"{
+        !include domain.puml
     }
 
-    EnvDetailAPI -> _raw_bamboo_api_deploy_build : CollectDeployBuild
-    ProjectAllAPI -> _raw_bamboo_api_deploy : CollectDeploy
-    JobDetailAPI --> _raw_bamboo_api_job_build:CollectJobBuild
-    SearchJobAPI --> _raw_bamboo_api_job :CollectJob
-    PlanResultAPI --> _raw_bamboo_api_plan_build :CollectPlanBuild
+'   _raw_bitbucket_api_accounts -->  _tool_bitbucket_accounts : ConvertAccounts
+   _tool_bitbucket_accounts-->  accounts : ConvertAccounts
 
-    _raw_bamboo_api_deploy_build --> _tool_bamboo_deploy_build : ExtractDeployBuild
-    _raw_bamboo_api_job_build -> _tool_bamboo_plan_build_commits : ExtractJobBuild
-    _raw_bamboo_api_job_build -> _tool_bamboo_job_builds : ExtractJobBuild
-    _raw_bamboo_api_deploy -->  _tool_bamboo_deploy_environment :ExtractDeploy
-    _raw_bamboo_api_plan_build  --> _tool_bamboo_plan_build_commits :ExtractPlanBuild
-    _raw_bamboo_api_plan_build  --> _tool_bamboo_plan_builds :ExtractPlanBuild
+   RepositoriesCommitsAPI --> _raw_bitbucket_api_commits : CollectApiCommits
 
-    _tool_bamboo_deploy_build --> cicd_deployment_commits : ConvertDeployBuilds
-    _tool_bamboo_plan_build_commits --> cicd_deployment_commits : ConvertDeployBuilds
-    _tool_bamboo_jobs --> _raw_bamboo_api_job_build:CollectJobBuild
-    _tool_bamboo_deploy_environment -> _raw_bamboo_api_deploy_build : CollectDeployBuild
-    _tool_bamboo_plan_build_commits --> cicd_pipeline_commits: ConvertPlanVcs
-    _tool_bamboo_plan_builds --> cicd_pipeline_commits: ConvertPlanVcs
-    _tool_bamboo_plans --> cicd_scopes : ConvertPlans
-    _tool_bamboo_plan_builds --> cicd_pipelines: ConvertPlanBuilds
-    _tool_bamboo_job_builds --> cicd_tasks :ConvertJobBuilds
+
+   node ConvertCommits
+
+   _tool_bitbucket_commits -->  ConvertCommits
+   _tool_bitbucket_repo_commits -->  ConvertCommits
+
+   ConvertCommits --> commits
+   ConvertCommits --> repo_commits
+
+   node ExtractApiCommits
+
+   _raw_bitbucket_api_commits --> ExtractApiCommits
+
+
+   ExtractApiCommits --> _tool_bitbucket_commits
+   ExtractApiCommits --> _tool_bitbucket_repo_commits
+
+
+    RepositoriesDeploymentsAPI --> _raw_bitbucket_api_deployments:CollectApiDeployments
+
+    _tool_bitbucket_deployments-->  cicd_deployment_commits :ConvertDeployments
+    _tool_bitbucket_pipelines-->  cicd_deployment_commits :ConvertDeployments
+
+    _raw_bitbucket_api_deployments --> _tool_bitbucket_deployments :ExtractApiDeployments
+
+
+    RepositoriesIssuesAPI --> _raw_bitbucket_api_issues :CollectApiIssues
+
+
+    RepositoriesIssueCommentsAPI -> _raw_bitbucket_api_issue_comments:CollectApiIssueComments
+    _tool_bitbucket_issues -> _raw_bitbucket_api_issue_comments:CollectApiIssueComments
+
+    _tool_bitbucket_issue_comments --> issue_comments:ConvertIssueComments
+    _tool_bitbucket_issues--> issue_comments:ConvertIssueComments
+
+    node ExtractApiIssueComments
+
+    _raw_bitbucket_api_issue_comments--> ExtractApiIssueComments
+
+    ExtractApiIssueComments --> _tool_bitbucket_accounts
+    ExtractApiIssueComments -->_tool_bitbucket_issue_comments
+
+
+    node ConvertIssues
+
+    _tool_bitbucket_issues -> ConvertIssues
+
+    ConvertIssues --> issues
+    ConvertIssues --> board_issues
+    ConvertIssues --> issue_assignees
+
+    node ExtractApiIssues
+
+    _raw_bitbucket_api_issues --> ExtractApiIssues
+
+    ExtractApiIssues --> _tool_bitbucket_accounts
+    ExtractApiIssues --> _tool_bitbucket_issues
+
+    RepositoriesIssuePipelinesAPI --> _raw_bitbucket_api_pipelines:CollectApiPipelines
+
+    _raw_bitbucket_api_pipelines --> _tool_bitbucket_pipelines:ExtractApiPipelines
+
+    node ConvertPipelines
+    _tool_bitbucket_repos --> ConvertPipelines
+    _tool_bitbucket_pipelines --> ConvertPipelines
+
+     ConvertPipelines -->cicd_pipeline_commits
+     ConvertPipelines -->cicd_pipelines
+
+
+     RepositoriesPipelineStepsAPI --> _raw_bitbucket_api_pipeline_steps:CollectPipelineSteps
+     _tool_bitbucket_pipelines --> _raw_bitbucket_api_pipeline_steps:CollectPipelineSteps
+
+     _raw_bitbucket_api_pipeline_steps --> _tool_bitbucket_pipeline_steps :ExtractPipelineSteps
+
+     _tool_bitbucket_pipeline_steps--> cicd_tasks : ConvertPipelineSteps
+
+    RepositoriesPullRequestsAPI --> _raw_bitbucket_api_pull_requests: CollectApiPullRequests
+
+    node ExtractApiPullRequests
+    _raw_bitbucket_api_pull_requests --> ExtractApiPullRequests
+    ExtractApiPullRequests --> accounts
+    ExtractApiPullRequests --> _tool_bitbucket_pull_requests
+
+    _tool_bitbucket_pull_requests --> pull_requests: ConvertPullRequests
+
+
+    _tool_bitbucket_pull_requests --> _raw_bitbucket_api_pull_request_comments:CollectApiPullRequestsComments
+    RepositoriesPullRequestCommentsAPI -->_raw_bitbucket_api_pull_request_comments: CollectApiPullRequestsComments
+
+    node ExtractApiPullRequestsComments
+
+    _raw_bitbucket_api_pull_request_comments --> ExtractApiPullRequestsComments
+    ExtractApiPullRequestsComments --> accounts
+    ExtractApiPullRequestsComments --> _tool_bitbucket_pull_request_comments
+
+
+    _tool_bitbucket_pull_request_comments --> pull_request_comments:ConvertPullRequestComments
+
+    _tool_bitbucket_pull_requests --> _raw_bitbucket_api_pull_request_commits:CollectApiPullRequestCommits
+    RepositoriesPullRequestCommitsAPI--> _raw_bitbucket_api_pull_request_commits:CollectApiPullRequestCommits
+
+    node ExtractApiPullRequestCommits
+    _raw_bitbucket_api_pull_request_commits--> ExtractApiPullRequestCommits
+    ExtractApiPullRequestCommits -->_tool_bitbucket_repo_commits
+    ExtractApiPullRequestCommits-->_tool_bitbucket_commits
+    ExtractApiPullRequestCommits-->_tool_bitbucket_pull_request_commits
+
+    _tool_bitbucket_pull_request_commits --> pull_request_commits:ConvertPullRequestCommits
+
+    node ConvertRepo
+    _tool_bitbucket_repos-->ConvertRepo
+    ConvertRepo--> repos
+    ConvertRepo-->boards
+    ConvertRepo-->cicd_scopes
+
 
 }
+
 @enduml
