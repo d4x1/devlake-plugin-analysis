@@ -3,7 +3,7 @@
 allowmixing
 !theme cyborg
 '!theme sandstone
-package Demo{
+package Jenkins{
     package APILayer {
         component "/{{ data.Options.JobPath }}job/{{ data.Options.JobName }}/api/json" as JobAPI
         component "/{{ data.Options.JobPath }}job/{{ data.Options.JobName }}/{{ _tool_jenkins_builds.number }}/api/json?tree=number,url,result,timestamp,id,duration,estimatedDuration,building" as JobBuildAPI

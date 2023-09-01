@@ -5,7 +5,10 @@ allowmixing
 '!theme sandstone
 !include plugin_jenkins_basic.puml
 
-node ConvertBuildsToCicdTasks
+ package Jenkins {
+    node ConvertBuildsToCicdTasks
+}
+
 
 _tool_jenkins_builds --> ConvertBuildsToCicdTasks
 
@@ -22,7 +25,9 @@ _tool_jenkins_build_commits --> cicd_pipeline_commits: ConvertBuildRepos
 _raw_jenkins_api_builds --> _tool_jenkins_builds: ExtractApiBuilds
 _raw_jenkins_api_builds --> _tool_jenkins_build_commits: ExtractApiBuilds
 
-node EnrichApiBuildWithStages
+package Jenkins {
+    node EnrichApiBuildWithStages
+}
 
 EnrichApiBuildWithStages --> _tool_jenkins_builds
 _tool_jenkins_builds --> EnrichApiBuildWithStages
