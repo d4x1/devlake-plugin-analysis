@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+!theme cyborg
+'!theme sandstone
+!include plugin_jenkins_basic.puml
+
+node ConvertBuildsToCicdTasks
+
+_tool_jenkins_builds --> ConvertBuildsToCicdTasks
+
+ConvertBuildsToCicdTasks --> cicd_pipelines
+ConvertBuildsToCicdTasks --> cicd_tasks
+
+JobAPI --> _raw_jenkins_api_builds : CollectApiBuilds
+JobBuildAPI --> _raw_jenkins_api_builds : CollectApiBuilds
+_tool_jenkins_builds--> _raw_jenkins_api_builds : CollectApiBuilds
+
+_tool_jenkins_builds --> cicd_pipeline_commits: ConvertBuildRepos
+_tool_jenkins_build_commits --> cicd_pipeline_commits: ConvertBuildRepos
+
+_raw_jenkins_api_builds --> _tool_jenkins_builds: ExtractApiBuilds
+_raw_jenkins_api_builds --> _tool_jenkins_build_commits: ExtractApiBuilds
+
+node EnrichApiBuildWithStages
+
+EnrichApiBuildWithStages --> _tool_jenkins_builds
+_tool_jenkins_builds --> EnrichApiBuildWithStages
+_tool_jenkins_stages --> EnrichApiBuildWithStages
+
+
+_tool_jenkins_jobs-->cicd_scopes:ConvertJobs
+
+_tool_jenkins_builds --> _raw_jenkins_api_stages :CollectApiStages
+JobBuildWfApiDescribeAPI --> _raw_jenkins_api_stages :CollectApiStages
+
+_raw_jenkins_api_stages --> _tool_jenkins_stages :ExtractApiStages
+
+_tool_jenkins_stages -->cicd_tasks:ConvertStages
+_tool_jenkins_builds-->cicd_tasks:ConvertStages
+@enduml

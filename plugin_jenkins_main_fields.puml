@@ -1,0 +1,17 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+!theme cyborg
+'!theme sandstone
+!include plugin_jenkins_basic.puml
+!include plugin_jenkins_main.puml
+cicd_pipeline_commits::branch <-- _tool_jenkins_build_commits::branch
+cicd_pipeline_commits::repo_id <-- _tool_jenkins_build_commits::repo_id
+cicd_pipeline_commits::commit_sha <-- _tool_jenkins_build_commits::commit_sha
+
+
+_tool_jenkins_build_commits::branch <-- _raw_jenkins_api_builds::Action.LastBuiltRevision
+_tool_jenkins_build_commits::repo_id <-- _raw_jenkins_api_builds::Action.LastBuiltRevision
+_tool_jenkins_build_commits::commit_sha <-- _raw_jenkins_api_builds::Action.LastBuiltRevision
+
+@enduml
