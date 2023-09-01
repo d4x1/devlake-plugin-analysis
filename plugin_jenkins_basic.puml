@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+!theme cyborg
+'!theme sandstone
+package Demo{
+    package APILayer {
+        component "/{{ data.Options.JobPath }}job/{{ data.Options.JobName }}/api/json" as JobAPI
+        component "/{{ data.Options.JobPath }}job/{{ data.Options.JobName }}/{{ _tool_jenkins_builds.number }}/api/json?tree=number,url,result,timestamp,id,duration,estimatedDuration,building" as JobBuildAPI
+
+        component "/{{ data.Options.JobPath }}job/{{ data.Options.JobName }}/{{ _tool_jenkins_builds.number }}/wfapi/describe" as JobBuildWfApiDescribeAPI
+
+
+    }
+
+    package RawLayer {
+
+    object "_raw_jenkins_api_builds" as _raw_jenkins_api_builds{
+        Action.LastBuiltRevision = ""
+    }
+    object "_raw_jenkins_api_stages" as _raw_jenkins_api_stages
+    }
+
+    package ToolLayer {
+        object "_tool_jenkins_builds" as  _tool_jenkins_builds
+        object "_tool_jenkins_build_commits" as  _tool_jenkins_build_commits{
+            commit_sha =$varchar255
+    	    branch =  $varchar255
+    	    repo_id  =  $varchar255
+        }
+        object "_tool_jenkins_stages" as _tool_jenkins_stages
+        object "_tool_jenkins_jobs" as _tool_jenkins_jobs
+        object "_tool_jenkins_job_dags" as _tool_jenkins_job_dags
+
+    }
+
+    package DomainLayer {
+        !include domain.puml
+    }
+}
+@enduml

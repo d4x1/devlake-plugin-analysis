@@ -13,7 +13,12 @@ package CI/CD {
 '    cicd_scopes::id <-- cicd_pipelines::id
 
     object "cicd_tasks" as cicd_tasks
-    object "cicd_pipeline_commits" as cicd_pipeline_commits
+    object "cicd_pipeline_commits" as cicd_pipeline_commits{
+        commit_sha =$varchar255
+    	branch =  $varchar255
+    	repo_id  =  $varchar255
+    }
+
     object "cicd_deployments" as cicd_deployments
     object "cicd_deployment_commits" as cicd_deployment_commits{
         environment = varchar255
