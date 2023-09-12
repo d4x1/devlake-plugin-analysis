@@ -1,0 +1,61 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include plugin_github_basic.puml
+
+
+RepoPullsAPI -->_raw_github_api_pull_requests :CollectApiPullRequests
+_tool_github_pull_requests --> _raw_github_api_pull_requests :CollectApiPullRequests
+RepoPullsNumberAPI --> _raw_github_api_pull_requests :CollectApiPullRequests
+
+_tool_github_pull_request_comments-->pull_request_comments:ConvertPullRequestComments
+_tool_github_pull_requests-->pull_request_comments:ConvertPullRequestComments
+
+RepoPullsNumberCommitAPI --> _raw_github_api_pull_request_commits :CollectApiPullRequestCommits
+_tool_github_pull_requests --> _raw_github_api_pull_request_commits :CollectApiPullRequestCommits
+
+_tool_github_pull_request_commits-->pull_request_commits:ConvertPullRequestCommits
+_tool_github_pull_requests-->pull_request_commits:ConvertPullRequestCommits
+
+
+_raw_github_api_pull_request_commits --> _tool_github_pull_request_commits:ExtractApiPullRequestCommits
+_raw_github_api_pull_request_commits --> _tool_github_repo_commits:ExtractApiPullRequestCommits
+_raw_github_api_pull_request_commits --> _tool_github_commits:ExtractApiPullRequestCommits
+
+_tool_github_pull_requests-->pull_requests:ConvertPullRequests
+
+_raw_github_api_pull_requests-->_tool_github_pull_request_labels:ExtractApiPullRequests
+_raw_github_api_pull_requests-->_tool_github_repo_accounts:ExtractApiPullRequests
+_raw_github_api_pull_requests--> _tool_github_pull_requests:ExtractApiPullRequests
+
+_tool_github_pull_request_issues-->pull_request_issues:ConvertPullRequestIssues
+_tool_github_pull_requests-->pull_request_issues:ConvertPullRequestIssues
+
+_tool_github_pull_requests--> _tool_github_pull_request_issues:EnrichPullRequestIssues
+_tool_github_issues--> _tool_github_pull_request_issues:EnrichPullRequestIssues
+
+_tool_github_pull_request_labels-->pull_request_labels:ConvertPullRequestLabels
+_tool_github_pull_requests-->pull_request_labels:ConvertPullRequestLabels
+
+_tool_github_pull_requests-->_raw_github_api_pull_request_reviews:CollectApiPullRequestReviews
+RepoPullsNumberReviewAPI -->_raw_github_api_pull_request_reviews:CollectApiPullRequestReviews
+
+
+node ExtractApiPrReviewComments
+
+ExtractApiPrReviewComments --> _tool_github_repo_accounts
+ExtractApiPrReviewComments --> _tool_github_pull_request_comments
+
+_raw_github_api_pull_request_review_comments --> ExtractApiPrReviewComments
+_tool_github_pull_requests --> ExtractApiPrReviewComments
+
+RepoPullsCommentsAPI-->_raw_github_api_pull_request_review_comments:CollectPrReviewComments
+
+
+_tool_github_pull_request_reviews-->pull_request_comments:ConvertPullRequestReviews
+_tool_github_pull_requests-->pull_request_comments:ConvertPullRequestReviews
+
+_raw_github_api_pull_request_reviews --> _tool_github_reviewers:ExtractApiPullRequestReviews
+_raw_github_api_pull_request_reviews --> _tool_github_pull_request_reviews:ExtractApiPullRequestReviews
+_raw_github_api_pull_request_reviews --> _tool_github_repo_accounts:ExtractApiPullRequestReviews
+hide @unlinked
+@enduml

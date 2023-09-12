@@ -1,0 +1,66 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include plugin_github_basic.puml
+
+
+RepoActionIssueCommentAPI --> _raw_github_api_comments :CollectApiComments
+
+node ExtractApiComments
+_raw_github_api_comments -->  ExtractApiComments
+_tool_github_issues --> ExtractApiComments
+
+ExtractApiComments -->_tool_github_repo_accounts
+ExtractApiComments -->_tool_github_issue_comments
+ExtractApiComments -->_tool_github_pull_request_comments
+
+
+RepoCommitsAPI--> _raw_github_api_commits :CollectApiCommits
+
+_raw_github_api_commits --> _tool_github_commits:ExtractApiCommits
+_raw_github_api_commits --> _tool_github_repo_commits:ExtractApiCommits
+_raw_github_api_commits --> _tool_github_accounts:ExtractApiCommits
+
+node ConvertCommits
+_tool_github_commits --> ConvertCommits
+_tool_github_repo_commits --> ConvertCommits
+
+ConvertCommits--> commits
+ConvertCommits-->repo_commits
+
+_tool_github_commit_stats -->_raw_github_api_commit_stats:CollectApiCommitStats
+_tool_github_repo_commits --> _raw_github_api_commit_stats:CollectApiCommitStats
+_tool_github_commits --> _raw_github_api_commit_stats:CollectApiCommitStats
+RepoCommitShaAPI --> _raw_github_api_commit_stats:CollectApiCommitStats
+
+_raw_github_api_commit_stats --> _tool_github_commits:ExtractApiCommitStats
+_raw_github_api_commit_stats --> _tool_github_commit_stats:ExtractApiCommitStats
+
+
+RepoIssueEventsAPI --> _raw_github_api_events :CollectApiEvents
+RepoIssueEventGithubIDAPI -->_raw_github_api_events :CollectApiEvents
+_tool_github_issue_events --> _raw_github_api_events :CollectApiEvents
+
+_raw_github_api_events --> _tool_github_repo_accounts :ExtractApiEvents
+_raw_github_api_events --> _tool_github_issue_events :ExtractApiEvents
+
+RepoMilestonesAPI --> _raw_github_milestones :CollectApiMilestones
+
+_raw_github_milestones --> _tool_github_milestones:ExtractMilestones
+
+node ConvertMilestones
+
+_tool_github_issues --> ConvertMilestones
+_tool_github_milestones --> ConvertMilestones
+
+ConvertMilestones --> board_sprints
+ConvertMilestones --> sprint_issues
+ConvertMilestones --> sprints
+
+
+_tool_github_repos --> repos :ConvertRepo
+_tool_github_repos --> boards:ConvertRepo
+_tool_github_repos --> board_repos:ConvertRepo
+_tool_github_repos --> cicd_scopes:ConvertRepo
+
+hide @unlinked
+@enduml

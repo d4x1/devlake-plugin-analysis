@@ -3,12 +3,21 @@
 
 
 package "Issue Tracking"{
-    object "issues" as issues
+
     object "board_issues" as  board_issues
+    object "boards" as  boards
+    object "board_repos" as  board_repos
+    object "board_sprints" as  board_sprints
+
+    object "sprints" as  sprints
+    object "sprint_issues" as  sprint_issues
+
+    object "issues" as issues
     object "issue_comments" as  issue_comments
     object "issue_assignees" as  issue_assignees
-    object "boards" as  boards
-
+    object "issue_labels" as issue_labels
+    object "issue_changelogs" as issue_changelogs
+    object "issues_worklogs" as issues_worklogs
 }
 
 @enduml
