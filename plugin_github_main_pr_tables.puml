@@ -40,8 +40,6 @@ _tool_github_pull_requests-->_raw_github_api_pull_request_reviews:CollectApiPull
 RepoPullsNumberReviewAPI -->_raw_github_api_pull_request_reviews:CollectApiPullRequestReviews
 
 
-RepoPullsCommentsAPI-->_raw_github_api_pull_request_review_comments:CollectPrReviewComments
-
 node ExtractApiPrReviewComments
 
 ExtractApiPrReviewComments --> _tool_github_repo_accounts
@@ -50,6 +48,8 @@ ExtractApiPrReviewComments --> _tool_github_pull_request_comments
 _raw_github_api_pull_request_review_comments --> ExtractApiPrReviewComments
 _tool_github_pull_requests --> ExtractApiPrReviewComments
 
+RepoPullsCommentsAPI-->_raw_github_api_pull_request_review_comments:CollectPrReviewComments
+
 
 _tool_github_pull_request_reviews-->pull_request_comments:ConvertPullRequestReviews
 _tool_github_pull_requests-->pull_request_comments:ConvertPullRequestReviews
@@ -57,5 +57,5 @@ _tool_github_pull_requests-->pull_request_comments:ConvertPullRequestReviews
 _raw_github_api_pull_request_reviews --> _tool_github_reviewers:ExtractApiPullRequestReviews
 _raw_github_api_pull_request_reviews --> _tool_github_pull_request_reviews:ExtractApiPullRequestReviews
 _raw_github_api_pull_request_reviews --> _tool_github_repo_accounts:ExtractApiPullRequestReviews
-
+hide @unlinked
 @enduml

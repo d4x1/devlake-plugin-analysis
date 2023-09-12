@@ -20,4 +20,5 @@ package Demo{
         !include domain.puml
     }
 }
+
 @enduml

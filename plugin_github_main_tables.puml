@@ -62,4 +62,5 @@ _tool_github_repos --> boards:ConvertRepo
 _tool_github_repos --> board_repos:ConvertRepo
 _tool_github_repos --> cicd_scopes:ConvertRepo
 
+hide @unlinked
 @enduml

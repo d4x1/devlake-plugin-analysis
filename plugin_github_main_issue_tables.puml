@@ -21,4 +21,5 @@ _tool_github_issues --> board_issues:ConvertIssues
 _tool_github_issue_comments --> issue_comments: ConvertIssueComments
 _tool_github_issues--> issue_comments: ConvertIssueComments
 
+hide @unlinked
 @enduml
