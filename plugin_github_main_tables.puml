@@ -3,42 +3,6 @@
 !include plugin_github_basic.puml
 
 
-_tool_github_repo_accounts --> _raw_github_api_accounts :CollectAccounts
-UserLoginAPI--> _raw_github_api_accounts :CollectAccounts
-
-_raw_github_api_accounts --> _tool_github_accounts :ExtractAccounts
-
-_tool_github_accounts --> accounts:ConvertAccounts
-_tool_github_repo_accounts  --> accounts:ConvertAccounts
-_tool_github_account_orgs--> accounts:ConvertAccounts
-
-
-_tool_github_repo_accounts --> _raw_github_api_account_orgs: CollectAccountOrg
-_tool_github_accounts--> _raw_github_api_account_orgs: CollectAccountOrg
-UserLoginOrgAPI--> _raw_github_api_account_orgs: CollectAccountOrg
-
-_raw_github_api_account_orgs --> _tool_github_account_orgs :ExtractAccountOrg
-
-
-_tool_github_runs -->_raw_github_api_jobs:CollectJobs
-RepoActionRunJobsAPI-->_raw_github_api_jobs:CollectJobs
-
-
-_raw_github_api_jobs-->_tool_github_jobs:ExtractJobs
-
-_tool_github_jobs --> cicd_tasks:ConvertJobs
-
-
-RepoActionRunsAPI --> _raw_github_api_runs :CollectRuns
-_tool_github_runs --> _raw_github_api_runs :CollectRuns
-RepoActionRunDetailsAPI--> _raw_github_api_runs :CollectRuns
-
-_raw_github_api_runs --> _tool_github_runs :ExtractRuns
-
-_tool_github_runs --> cicd_pipelines:ConvertRuns
-_tool_github_runs --> cicd_pipeline_commits:ConvertRuns
-
-
 RepoActionIssueCommentAPI --> _raw_github_api_comments :CollectApiComments
 
 node ExtractApiComments
@@ -78,25 +42,6 @@ _tool_github_issue_events --> _raw_github_api_events :CollectApiEvents
 
 _raw_github_api_events --> _tool_github_repo_accounts :ExtractApiEvents
 _raw_github_api_events --> _tool_github_issue_events :ExtractApiEvents
-
-_tool_github_issue_assignees --> issue_assignees:ConvertIssueAssignee
-
-RepoIssuesAPI --> _raw_github_api_issues :CollectApiIssues
-
-_raw_github_api_issues -->_tool_github_issues :ExtractApiIssues
-_raw_github_api_issues --> _tool_github_issue_labels :ExtractApiIssues
-_raw_github_api_issues --> _tool_github_repo_accounts :ExtractApiIssues
-
-
-_tool_github_issue_labels-->issue_labels:ConvertIssueLabels
-_tool_github_issues-->issue_labels:ConvertIssueLabels
-
-_tool_github_issues --> issues:ConvertIssues
-_tool_github_issues --> board_issues:ConvertIssues
-
-
-_tool_github_issue_comments --> issue_comments: ConvertIssueComments
-_tool_github_issues--> issue_comments: ConvertIssueComments
 
 RepoMilestonesAPI --> _raw_github_milestones :CollectApiMilestones
 

@@ -1,63 +1,28 @@
 @startuml
 'https://plantuml.com/object-diagram
 allowmixing
-'!theme cyborg
+hide object fields
+!theme cyborg
 '!theme sandstone
 package Github{
     package APILayer {
         component "/users/{{ _tool_github_repo_accounts.login }}" as  UserLoginAPI
         component "/users/{{ _tool_github_repo_accounts.login }}/orgs" as  UserLoginOrgAPI
         component "/repos/{{ data.Options.Name }}/actions/runs/{{ _tool_github_runs.id }}/jobs" as  RepoActionRunJobsAPI
-
         component "/repos/{{ data.Options.Name }}/actions/runs" as  RepoActionRunsAPI
-
         component "/repos/{{ data.Options.Name }}/actions/runs/{{ _tool_github_runs.id }}" as  RepoActionRunDetailsAPI
-
         component "/repos/{{ data.Options.Name }}/issues/comments" as  RepoActionIssueCommentAPI
-
         component "/repos/{{ data.Options.Name }}/commits" as  RepoCommitsAPI
-
         component "/repos/{{ data.Options.Name }}/commits/{{ _tool_github_commits.sha }}" as  RepoCommitShaAPI
-
         component "/repos/{{ data.Options.Name }}/issues/events" as  RepoIssueEventsAPI
-
         component "/repos/{{ data.Options.Name }}/issues/events/{{ _tool_github_issue_events.github_id }}" as  RepoIssueEventGithubIDAPI
-
         component "/repos/{{ data.Options.Name }}/issues" as  RepoIssuesAPI
-
         component "/repos/{{ data.Options.Name }}/milestones" as  RepoMilestonesAPI
-
         component "/repos/{{ data.Options.Name }}/pulls" as  RepoPullsAPI
-
         component "/repos/{{ data.Options.Name }}/pulls/{{ _tool_github_pull_requests.number }}" as  RepoPullsNumberAPI
-
         component "/repos/{{ data.Options.Name }}/pulls/{{ _tool_github_pull_requests.number }}/commits" as  RepoPullsNumberCommitAPI
-
         component "/repos/{{ data.Options.Name }}/pulls/{{ _tool_github_pull_requests.number }}/reviews" as  RepoPullsNumberReviewAPI
-
         component "/repos/{{ data.Options.Name }}/pulls/comments" as  RepoPullsCommentsAPI
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     package RawLayer {
@@ -75,7 +40,6 @@ package Github{
         object "_raw_github_api_pull_request_commits" as _raw_github_api_pull_request_commits
         object "_raw_github_api_pull_request_review_comments" as _raw_github_api_pull_request_review_comments
         object "_raw_github_api_pull_request_reviews" as _raw_github_api_pull_request_reviews
-
     }
 
     package ToolLayer {
@@ -102,7 +66,6 @@ package Github{
         object "_tool_github_pull_request_reviews" as _tool_github_pull_request_reviews
         object "_tool_github_pull_request_issues" as _tool_github_pull_request_issues
         object "_tool_github_repos" as _tool_github_repos
-
     }
 
     package DomainLayer {

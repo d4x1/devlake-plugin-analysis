@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include plugin_github_basic.puml
+_tool_github_repo_accounts --> _raw_github_api_accounts :CollectAccounts
+UserLoginAPI--> _raw_github_api_accounts :CollectAccounts
+
+_raw_github_api_accounts --> _tool_github_accounts :ExtractAccounts
+
+_tool_github_accounts --> accounts:ConvertAccounts
+_tool_github_repo_accounts  --> accounts:ConvertAccounts
+_tool_github_account_orgs--> accounts:ConvertAccounts
+
+
+_tool_github_repo_accounts --> _raw_github_api_account_orgs: CollectAccountOrg
+_tool_github_accounts--> _raw_github_api_account_orgs: CollectAccountOrg
+UserLoginOrgAPI--> _raw_github_api_account_orgs: CollectAccountOrg
+
+_raw_github_api_account_orgs --> _tool_github_account_orgs :ExtractAccountOrg
+
+
+@enduml

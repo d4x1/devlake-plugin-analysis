@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include plugin_github_basic.puml
+
+
+_tool_github_runs -->_raw_github_api_jobs:CollectJobs
+RepoActionRunJobsAPI-->_raw_github_api_jobs:CollectJobs
+
+
+_raw_github_api_jobs-->_tool_github_jobs:ExtractJobs
+
+_tool_github_jobs --> cicd_tasks:ConvertJobs
+
+
+RepoActionRunsAPI --> _raw_github_api_runs :CollectRuns
+_tool_github_runs --> _raw_github_api_runs :CollectRuns
+RepoActionRunDetailsAPI--> _raw_github_api_runs :CollectRuns
+
+_raw_github_api_runs --> _tool_github_runs :ExtractRuns
+
+_tool_github_runs --> cicd_pipelines:ConvertRuns
+_tool_github_runs --> cicd_pipeline_commits:ConvertRuns
+
+
+@enduml

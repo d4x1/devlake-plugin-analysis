@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/object-diagram
+!include plugin_github_basic.puml
+
+_tool_github_issue_assignees --> issue_assignees:ConvertIssueAssignee
+
+RepoIssuesAPI --> _raw_github_api_issues :CollectApiIssues
+
+_raw_github_api_issues -->_tool_github_issues :ExtractApiIssues
+_raw_github_api_issues --> _tool_github_issue_labels :ExtractApiIssues
+_raw_github_api_issues --> _tool_github_repo_accounts :ExtractApiIssues
+
+
+_tool_github_issue_labels-->issue_labels:ConvertIssueLabels
+_tool_github_issues-->issue_labels:ConvertIssueLabels
+
+_tool_github_issues --> issues:ConvertIssues
+_tool_github_issues --> board_issues:ConvertIssues
+
+
+_tool_github_issue_comments --> issue_comments: ConvertIssueComments
+_tool_github_issues--> issue_comments: ConvertIssueComments
+
+@enduml
