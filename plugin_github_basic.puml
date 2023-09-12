@@ -1,0 +1,112 @@
+@startuml
+'https://plantuml.com/object-diagram
+allowmixing
+'!theme cyborg
+'!theme sandstone
+package Github{
+    package APILayer {
+        component "/users/{{ _tool_github_repo_accounts.login }}" as  UserLoginAPI
+        component "/users/{{ _tool_github_repo_accounts.login }}/orgs" as  UserLoginOrgAPI
+        component "/repos/{{ data.Options.Name }}/actions/runs/{{ _tool_github_runs.id }}/jobs" as  RepoActionRunJobsAPI
+
+        component "/repos/{{ data.Options.Name }}/actions/runs" as  RepoActionRunsAPI
+
+        component "/repos/{{ data.Options.Name }}/actions/runs/{{ _tool_github_runs.id }}" as  RepoActionRunDetailsAPI
+
+        component "/repos/{{ data.Options.Name }}/issues/comments" as  RepoActionIssueCommentAPI
+
+        component "/repos/{{ data.Options.Name }}/commits" as  RepoCommitsAPI
+
+        component "/repos/{{ data.Options.Name }}/commits/{{ _tool_github_commits.sha }}" as  RepoCommitShaAPI
+
+        component "/repos/{{ data.Options.Name }}/issues/events" as  RepoIssueEventsAPI
+
+        component "/repos/{{ data.Options.Name }}/issues/events/{{ _tool_github_issue_events.github_id }}" as  RepoIssueEventGithubIDAPI
+
+        component "/repos/{{ data.Options.Name }}/issues" as  RepoIssuesAPI
+
+        component "/repos/{{ data.Options.Name }}/milestones" as  RepoMilestonesAPI
+
+        component "/repos/{{ data.Options.Name }}/pulls" as  RepoPullsAPI
+
+        component "/repos/{{ data.Options.Name }}/pulls/{{ _tool_github_pull_requests.number }}" as  RepoPullsNumberAPI
+
+        component "/repos/{{ data.Options.Name }}/pulls/{{ _tool_github_pull_requests.number }}/commits" as  RepoPullsNumberCommitAPI
+
+        component "/repos/{{ data.Options.Name }}/pulls/{{ _tool_github_pull_requests.number }}/reviews" as  RepoPullsNumberReviewAPI
+
+        component "/repos/{{ data.Options.Name }}/pulls/comments" as  RepoPullsCommentsAPI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    package RawLayer {
+        object "_raw_github_api_account_orgs" as  _raw_github_api_account_orgs
+        object "_raw_github_api_accounts" as  _raw_github_api_accounts
+        object "_raw_github_api_comments" as  _raw_github_api_comments
+        object "_raw_github_api_commit_stats" as  _raw_github_api_commit_stats
+        object "_raw_github_api_commits" as  _raw_github_api_commits
+        object "_raw_github_api_events" as  _raw_github_api_events
+        object "_raw_github_api_issues" as  _raw_github_api_issues
+        object "_raw_github_api_jobs" as  _raw_github_api_jobs
+        object "_raw_github_api_runs" as  _raw_github_api_runs
+        object "_raw_github_milestones" as  _raw_github_milestones
+        object "_raw_github_api_pull_requests" as _raw_github_api_pull_requests
+        object "_raw_github_api_pull_request_commits" as _raw_github_api_pull_request_commits
+        object "_raw_github_api_pull_request_review_comments" as _raw_github_api_pull_request_review_comments
+        object "_raw_github_api_pull_request_reviews" as _raw_github_api_pull_request_reviews
+
+    }
+
+    package ToolLayer {
+        object "_github_issue_assignees" as  _github_issue_assignees
+        object "_tool_github_account_orgs" as  _tool_github_account_orgs
+        object "_tool_github_accounts" as  _tool_github_accounts
+        object "_tool_github_commit_stats" as  _tool_github_commit_stats
+        object "_tool_github_commits" as  _tool_github_commits
+        object "_tool_github_issue_comments" as  _tool_github_issue_comments
+        object "_tool_github_issue_events" as  _tool_github_issue_events
+        object "_tool_github_issue_labels" as  _tool_github_issue_labels
+        object "_tool_github_issues" as  _tool_github_issues
+        object "_tool_github_jobs" as  _tool_github_jobs
+        object "_tool_github_milestones" as  _tool_github_milestones
+        object "_tool_github_pull_request_comments" as  _tool_github_pull_request_comments
+        object "_tool_github_repo_accounts" as  _tool_github_repo_accounts
+        object "_tool_github_repo_commits" as  _tool_github_repo_commits
+        object "_tool_github_runs" as  _tool_github_runs
+        object "_tool_github_pull_requests" as _tool_github_pull_requests
+        object "_tool_github_issue_assignees" as _tool_github_issue_assignees
+        object "_tool_github_pull_request_commits" as _tool_github_pull_request_commits
+        object "_tool_github_reviewers" as _tool_github_reviewers
+        object "_tool_github_pull_request_labels" as _tool_github_pull_request_labels
+        object "_tool_github_pull_request_reviews" as _tool_github_pull_request_reviews
+        object "_tool_github_pull_request_issues" as _tool_github_pull_request_issues
+        object "_tool_github_repos" as _tool_github_repos
+
+    }
+
+    package DomainLayer {
+        !include domain.puml
+    }
+}
+@enduml

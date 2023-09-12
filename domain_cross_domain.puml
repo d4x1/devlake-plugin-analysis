@@ -2,10 +2,20 @@
 'https://plantuml.com/object-diagram
 
 package "Cross Domain"{
-    object "project_mapping" as project_mapping
+    object "projects" as projects
+    object "project_metric_settings" as project_metric_settings
     object "project_pr_metrics" as project_pr_metrics
     object "project_issue_metrics" as project_issue_metrics
+
     object "accounts" as accounts
+
+    object "users" as users
+    object "user_accounts" as user_accounts
+
+    object "team_users" as team_users
+    object "teams" as teams
+
+    object "pull_request_issues" as pull_request_issues
 
 }
 

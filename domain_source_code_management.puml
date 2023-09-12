@@ -2,11 +2,19 @@
 'https://plantuml.com/object-diagram
 
 package "Source Code Management"{
-    object "commits_diffs" as commits_diffs
     object "commits" as commits
-    object "repo_commits" as repo_commits
-    object "repos" as repos
+    object "commit_parents" as commit_parents
+    object "commit_files" as commit_files
+    object "commits_diffs" as commits_diffs
 
+    object "repos" as repos
+    object "repo_commits" as repo_commits
+    object "repo_diffs" as repo_diffs
+
+    object "refs" as refs
+    object "ref_commits" as ref_commits
+
+    object "components" as components
 }
 
 @enduml

@@ -1,7 +1,23 @@
 @startuml
 'https://plantuml.com/object-diagram
-!theme cyborg
+allowmixing
+'!theme cyborg
 '!theme sandstone
 package Demo{
+    package APILayer {
+
+    }
+
+    package RawLayer {
+
+    }
+
+    package ToolLayer {
+
+    }
+
+    package DomainLayer {
+        !include domain.puml
+    }
 }
 @enduml
