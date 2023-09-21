@@ -2,10 +2,10 @@
 'https://plantuml.com/object-diagram
 allowmixing
 '!theme sandstone
-!theme cyborg
+'!theme cyborg
 !include vars.puml
 !include plugin_bamboo_basic.puml
-!include  plugin_bamboo_main_tables.puml
+'!include  plugin_bamboo_main_tables.puml
 
 'fields relations
 _tool_bamboo_plan_builds::type <-- Data::RegexEnricher : "DEPLOYMENT"
@@ -16,4 +16,31 @@ cicd_deployment_commits::environment <-- Data::RegexEnricher : "ENV_NAME_PATTERN
 _tool_bamboo_job_builds::type <-- Data::RegexEnricher : "DEPLOYMENT"
 _tool_bamboo_job_builds::environment <-- Data::RegexEnricher : "PRODUCTION"
 
+cicd_scopes::name <-- _tool_bamboo_plans::name
+
+cicd_tasks::type <-- _tool_bamboo_job_builds::type
+_tool_bamboo_job_builds::type <-- _raw_bamboo_api_job_build::unknown
+
+cicd_pipelines::environment <-- _tool_bamboo_plan_builds::environment
+cicd_pipelines::type <-- _tool_bamboo_plan_builds::type
+
+cicd_pipeline_commits::repo_url <-- _tool_bamboo_plan_build_commits::repository_name
+_tool_bamboo_plan_build_commits::repository_name <-- _raw_bamboo_api_plan_builds::vcs_revisions_repository_name
+_tool_bamboo_plan_build_commits::repository_name <-- _raw_bamboo_api_job_build::vcs_revisions_repository_name
+
+cicd_deployment_commits::prev_success_deployment_commit_id <-- cicd_deployment_commits::id
+'"CicdScopeId、RepoUrl、Environment 均相同"
+
+_tool_bamboo_plan_builds::build_state <-- _raw_bamboo_api_plan_builds::buildState
+
+cicd_tasks::started_date <-- _tool_bamboo_job_builds::build_start_time
+
+cicd_pipelines::created_date <-- _tool_bamboo_plan_builds::build_start_time
+
+cicd_deployment_commits::created_date <-- _tool_bamboo_deploy_builds::queued_date
+cicd_deployment_commits::started_date <-- _tool_bamboo_deploy_builds::started_date
+
+
+
+hide @unlinked
 @enduml

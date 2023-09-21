@@ -3,7 +3,7 @@
 allowmixing
 hide empty members
 '!theme sandstone
-!theme cyborg
+'!theme cyborg
 !include vars.puml
 
 package Bamboo{
@@ -23,31 +23,49 @@ package Bamboo{
     }
 
     package RawLayer {
-        object "_raw_bamboo_api_deploy_build" as _raw_bamboo_api_deploy_build
-        object "_raw_bamboo_api_deploy" as _raw_bamboo_api_deploy
-        object "_raw_bamboo_api_job_build" as _raw_bamboo_api_job_build
-        object "_raw_bamboo_api_plan_build" as _raw_bamboo_api_plan_build
-        object "_raw_bamboo_api_job" as _raw_bamboo_api_job
+        object "_raw_bamboo_api_deploy_builds" as _raw_bamboo_api_deploy_build
+        object "_raw_bamboo_api_deploys" as _raw_bamboo_api_deploy
+        object "_raw_bamboo_api_job_builds" as _raw_bamboo_api_job_build {
+            'vcs_revisions[].vcs_revision[].repository_name = ""
+            vcs_revisions_repository_name = $varchar255
+        }
+        object "_raw_bamboo_api_plan_builds" as _raw_bamboo_api_plan_builds {
+            'vcs_revisions[].vcs_revision[].repository_name = ""
+            vcs_revisions_repository_name = $varchar255
+            buildState = $varchar255
+        }
+        object "_raw_bamboo_api_jobs" as _raw_bamboo_api_job
     }
 
     package ToolLayer {
-        object "_tool_bamboo_deploy_build" as _tool_bamboo_deploy_build
-        object "_tool_bamboo_plan_build_commits" as _tool_bamboo_plan_build_commits
+        object "_tool_bamboo_deploy_build" as _tool_bamboo_deploy_build {
+            started_date = $datetime
+            queued_date = $datetime
+        }
+        object "_tool_bamboo_plan_build_commits" as _tool_bamboo_plan_build_commits{
+            repository_name = $varchar255
+        }
         object "_tool_bamboo_deploy_environment" as _tool_bamboo_deploy_environment
         object "_tool_bamboo_jobs" as _tool_bamboo_jobs
         object "_tool_bamboo_plan_builds" as _tool_bamboo_plan_builds{
-            type = varchar255
-            environment = varchar255
+            type = $varchar255
+            environment = $varchar255
+            build_state = $varchar255
+            build_start_time = $datetime
         }
         object "_tool_bamboo_job_builds" as _tool_bamboo_job_builds{
-            type = varchar255
-            environment = varchar255
+            type = $varchar255
+            environment = $varchar255
+            build_start_time = $datetime
         }
-        object "_tool_bamboo_plans" as _tool_bamboo_plans
+        object "_tool_bamboo_plans" as _tool_bamboo_plans {
+            name = $varchar255
+        }
     }
 
     package DomainLayer {
        !include domain_cicd.puml
     }
 }
+
 @enduml
