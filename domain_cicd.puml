@@ -1,27 +1,47 @@
 @startuml
 'https://plantuml.com/object-diagram
-!$varchar255 = "varchar(255)"
+!include vars.puml
 
 package CI/CD {
     object "cicd_scopes" as cicd_scopes{
         id = $varchar255
+        name = $varchar255
+        url = $varchar255
+        description = $varchar255
+        created_date = $datetime
+        updated_date = $datetime
     }
 
     object "cicd_pipelines" as cicd_pipelines{
         id = $varchar255
+        environment = $varchar255
+        type = $varchar100
+        duration_sec = $uint64
+        created_date = $datetime
     }
 '    cicd_scopes::id <-- cicd_pipelines::id
 
-    object "cicd_tasks" as cicd_tasks
+    object "cicd_tasks" as cicd_tasks {
+        type = $varchar100
+        duration_sec = $uint64
+        started_date = $datetime
+    }
     object "cicd_pipeline_commits" as cicd_pipeline_commits{
+        environment = $varchar255
         commit_sha =$varchar255
     	branch =  $varchar255
     	repo_id  =  $varchar255
+    	repo_url = $varchar255
     }
 
     object "cicd_deployments" as cicd_deployments
     object "cicd_deployment_commits" as cicd_deployment_commits{
-        environment = varchar255
+        id = $varchar255
+        environment = $varchar255
+        prev_success_deployment_commit_id = $varchar255
+
+        created_date = $datetime
+        started_date = $datetime
     }
 
 }

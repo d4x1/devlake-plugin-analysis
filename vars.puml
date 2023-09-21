@@ -1,4 +1,10 @@
 @startuml
 'https://plantuml.com/object-diagram
 !$varchar255 = "varchar(255)"
+!$varchar100 = "varchar(100)"
+!$datetime = "datetime"
+!$uint64 = "uint64"
+!$longtext = "longtext"
+!$time = "datetime"
+
 @enduml
